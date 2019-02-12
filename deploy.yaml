@@ -1,0 +1,24 @@
+---
+dockerRepository:
+  developmentRepositoryName: mycujoo-fun-development
+  productionRepositoryName: mycujoo-fun-production
+  branchRepositoryName:
+    master: mycujoo-fun-development
+  registryRoot: eu.gcr.io
+application:
+  name: go-service-template
+  version: 1.0
+  pathToKubernetesFiles: kubernetes/config
+  kubernetesTemplate:
+    branchVariables:
+      production:
+      - REPLICA_COUNT=4
+      - ENV=production
+      master,dev:
+      - REPLICA_COUNT=1
+      - ENV=staging
+    globalVariables:
+    - PORT="3000"
+    - APP_NAME={{.KD_APP_NAME}}
+    - NAMESPACE={{.KD_KUBERNETES_NAMESPACE}}
+    - IMAGE={{.KD_IMAGE_FULL_PATH}}
